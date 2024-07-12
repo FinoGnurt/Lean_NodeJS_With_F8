@@ -19,7 +19,7 @@ class CourseController {
     //   }
     // }
 
-    async show(req, res, next) {
+    show(req, res) {
         // [GET] /courses/:slug
         res.send('asldjklas');
     }

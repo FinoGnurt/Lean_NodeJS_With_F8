@@ -1,2 +1,8 @@
 .card-course-item {
   margin-top: 16px; }
+
+.link-decoration {
+  text-decoration: none !important; }
+
+.link-decoration:hover {
+  text-decoration: underline !important; }
