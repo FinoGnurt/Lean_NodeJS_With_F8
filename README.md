@@ -130,7 +130,7 @@ async home(req, res, next) {
 
 ## 3. Tự động tạo createAt và updateAt trong Model
 
-- <p>Trong file Model <=> xóa 'createAt' và 'updateAt', thêm object 'timestamps: true' </p>
+- <p>Trong file Model <=> Xóa 'createAt' và 'updateAt', thêm object 'timestamps: true' </p>
 
 ```
 const Course = new Schema({
@@ -157,4 +157,59 @@ const Course = new Schema(
   },
   { timestamps: true }
 );
+```
+
+## 4. Thêm helpers để chỉnh sửa id đếm số từ 1 trở lên trong handlebars (có 2 cách)
+
+### Cách 1: Thêm 'helpers:{}' vào 'engine'
+
+- <p>Trong file viewEngine <=> Thêm 'helpers:{}' vào 'engine({ extname: ".hbs" })' </p>
+
+```
+app.engine("hbs", engine({ extname: ".hbs" }));
+```
+
+<p align="center">-------------------- sửa thành --------------------</p>
+
+```
+app.engine(
+  "hbs",
+  engine({
+    extname: ".hbs",
+    helpers: {
+      sum: (a, b) => a + b,
+    },
+  })
+);
+```
+
+### Cách 2: Thêm 'helpers:{}' vào 'res.render'
+
+```
+async storedCourses(req, res, next) {
+  try {
+    const courses = await Course.find({}).lean();
+    res.render("me/stored-courses", { courses });
+  } catch (err) {
+    next(err);
+  }
+}
+```
+
+<p align="center">-------------------- sửa thành --------------------</p>
+
+```
+async storedCourses(req, res, next) {
+  try {
+    const courses = await Course.find({}).lean();
+    res.render("me/stored-courses", {
+      courses,
+      helpers: {
+        sum: (a, b) => a + b,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+}
 ```
