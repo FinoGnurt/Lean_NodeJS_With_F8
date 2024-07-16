@@ -128,6 +128,10 @@ async home(req, res, next) {
 
 ```
 
+---
+
+</br>
+
 ## 3. Tự động tạo createAt và updateAt trong Model
 
 - <p>Trong file Model <=> Xóa 'createAt' và 'updateAt', thêm object 'timestamps: true' </p>
@@ -158,6 +162,10 @@ const Course = new Schema(
   { timestamps: true }
 );
 ```
+
+---
+
+</br>
 
 ## 4. Thêm helpers để chỉnh sửa id đếm số từ 1 trở lên trong handlebars (có 2 cách)
 
