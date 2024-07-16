@@ -5,43 +5,43 @@
 ### Cách 1: Viết theo dạng callback
 
 ```
-  async home(req, res) {
-    try {
-      const courses = await Course.find({});
-      res.json(courses);
-    } catch (err) {
-      res.status(400).json({ error: "ERROR!!!" });
-    }
+async home(req, res) {
+  try {
+    const courses = await Course.find({});
+    res.json(courses);
+  } catch (err) {
+    res.status(400).json({ error: "ERROR!!!" });
   }
+}
 ```
 
 <p align="center">-------------------- hoặc --------------------</p>
 
 ```
-  home(req, res) {
-    async function getReviews() {
-      const reviewlist = await Course.find({});
-      return reviewlist;
-    }
-    getReviews().then(function findItems(item) {
-      res.json(item);
-    });
+home(req, res) {
+  async function getReviews() {
+    const reviewlist = await Course.find({});
+    return reviewlist;
   }
+  getReviews().then(function findItems(item) {
+    res.json(item);
+  });
+}
 
 ```
 
 ### Cách 2: Viết theo dạng promise
 
 ```
-  home(req, res) {
-    Course.find({})
-      .then((courses) => {
-        res.json(courses);
-      })
-      .catch((err) => {
-        res.status(400).json({ error: "ERROR!!!" });
-      });
-  }
+home(req, res) {
+  Course.find({})
+    .then((courses) => {
+      res.json(courses);
+    })
+    .catch((err) => {
+      res.status(400).json({ error: "ERROR!!!" });
+    });
+}
 ```
 
 ---
@@ -61,13 +61,14 @@ app.engine("hbs", engine({ extname: ".hbs", defaultLayout: "main" }));
 <p align="center">-------------------- sửa thành --------------------</p>
 
 ```
-app.engine("hbs",engine({
-      extname: ".hbs",
-      defaultLayout: "main",
-      runtimeOptions: {
-        allowProtoPropertiesByDefault: true,
-      },
-    })
+app.engine("hbs",
+  engine({
+    extname: ".hbs",
+    defaultLayout: "main",
+    runtimeOptions: {
+      allowProtoPropertiesByDefault: true,
+    },
+  })
 );
 ```
 
@@ -90,11 +91,11 @@ Course.find({}).lean()
 - <p>Trong file SiteController. Thêm 'courses = courses.map((x) => x.toObject())' </p>
 
 ```
-  home(req, res, next) {
-    Course.find({})
-      .then((courses) => res.render("home", { courses }))
-      .catch(next);
-  }
+home(req, res, next) {
+  Course.find({})
+    .then((courses) => res.render("home", { courses }))
+    .catch(next);
+}
 ```
 
 <p align="center">-------------------- sửa thành --------------------</p>
@@ -102,14 +103,14 @@ Course.find({}).lean()
 > Promise
 
 ```
-  home(req, res, next) {
-    Course.find({})
-      .then((courses) => {
-        courses = courses.map((courses) => courses.toObject());
-        res.render("home", { courses });
-      })
-      .catch(next);
-  }
+home(req, res, next) {
+  Course.find({})
+    .then((courses) => {
+      courses = courses.map((courses) => courses.toObject());
+      res.render("home", { courses });
+    })
+    .catch(next);
+}
 ```
 
 > CallBack
@@ -125,4 +126,35 @@ async home(req, res, next) {
   }
 }
 
+```
+
+## 3. Tự động tạo createAt và updateAt trong Model
+
+- <p>Trong file Model <=> xóa 'createAt' và 'updateAt', thêm object 'timestamps: true' </p>
+
+```
+const Course = new Schema({
+  name: { type: String, maxLength: 255, required: true },
+  description: { type: String, maxLength: 600 },
+  image: { type: String, maxLength: 255 },
+  videoId: { type: String, maxLength: 255, required: true },
+  level: { type: String, maxLength: 255 },
+  createAt: { type: Date, default: Date.now },
+  updateAt: { type: Date, default: Date.now },
+});
+```
+
+<p align="center">-------------------- sửa thành --------------------</p>
+
+```
+const Course = new Schema(
+  {
+    name: { type: String, maxLength: 255, required: true },
+    description: { type: String },
+    image: { type: String, maxLength: 255 },
+    videoId: { type: String, maxLength: 255, required: true },
+    level: { type: String, maxLength: 255 },
+  },
+  { timestamps: true }
+);
 ```
