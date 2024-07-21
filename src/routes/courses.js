@@ -7,6 +7,8 @@ router.get("/create", courseController.create);
 router.post("/store", courseController.store);
 router.get("/:id/edit", courseController.edit);
 router.put("/:id/update", courseController.update);
+router.patch("/:id/restore", courseController.restore);
+router.delete("/:id/delete", courseController.destroy);
 
 //Router default
 router.get("/:slug", courseController.show);
